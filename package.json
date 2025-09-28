@@ -1,5 +1,5 @@
 {
-  "name": "yolo-object-detection-onnxruntime-web",
+  "name": "yolo-multi-task-onnxruntime-web",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,27 +9,30 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
+    "deploy:manual": "npm run build && git subtree push --prefix dist origin gh-pages",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "@techstark/opencv-js": "^4.10.0-release.1",
     "gh-pages": "^6.3.0",
-    "onnxruntime-web": "^1.20.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.0.0",
-    "vite-plugin-static-copy": "^2.2.0"
+    "mp4-muxer": "^5.2.1",
+    "mp4box": "^0.5.4",
+    "onnxruntime-web": "^1.22.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.9"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "eslint": "^9.17.0",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "vite": "^6.0.5"
+    "@eslint/js": "^9.21.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react-swc": "^3.8.0",
+    "eslint": "^9.21.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^15.15.0",
+    "vite": "^6.2.0",
+    "vite-plugin-mkcert": "^1.17.8"
   }
 }

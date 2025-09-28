@@ -1,22 +1,22 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { viteStaticCopy } from "vite-plugin-static-copy"
 import tailwindcss from '@tailwindcss/vite'
+import mkcert from 'vite-plugin-mkcert'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    viteStaticCopy({
-      targets: [
-        {
-          src: "node_modules/onnxruntime-web/dist/*.wasm",
-          dest: "./",
-        },
-      ],
-    }),
+    mkcert()
   ],
+  optimizeDeps: {
+    exclude: ['onnxruntime-web']
+  },
   assetsInclude: ["**/*.onnx"],
-  base: "/yolo-object-detection-onnxruntime-web/"
+  base: "/yolo-object-detection-onnxruntime-web/",
+
+  server: {
+    https: true
+  },
 })
