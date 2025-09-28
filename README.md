@@ -1,49 +1,68 @@
 # yolo object detect onnxruntime-web
 
-<img src="./preview.png" height=80% width=80%>
+<img src="./preview.png" height=60% width=60%>
 
-This is yolo model object detect browser, powered by onnxruntime web.
+## ✨ Features
 
-Support Webgpu acceleration performance and wasm(cpu).
+This web application built on ONNX Runtime Web implements YOLO's object detection inference capabilities
 
-Realtime process webcam, image.
+- 🔍 **Object Detection** - Precisely identify and locate various objects
 
-Add your custom model for inference.
+## 💻 Technical Support
 
-## Models
+- ⚡ **WebGPU Acceleration** - Leverage the latest Web graphics API for enhanced performance
+- 🧠 **WASM (CPU)** - Provide compatibility on devices that don't support WebGPU
 
-### Available Yolo Models
+## 📹 Input Types Support
 
-| Model                                                  | Input Size | Param. |
-| :----------------------------------------------------- | :--------: | :----: |
-| [YOLO11-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  |
-| [YOLO11-S](https://github.com/ultralytics/ultralytics) |    640     |  9.4M  |
-| [YOLO11-M](https://github.com/ultralytics/ultralytics) |    640     | 20.1M  |
+The application supports multiple input types for object detection:
 
-### NMS decoder (⚠️ NOT USEING NOW)
+| Input Type | Format | Description | Use Case |
+| :--------- | :----: | :---------- | :------- |
+| 📷 **Image** | JPG, PNG | Upload and analyze static images | 🔍 Single image analysis, batch processing |
+| 📹 **Video** | MP4 | Upload and process video files | 🎬 Offline video analysis, content review |
+| 📺 **Live Camera** | Real-time stream | Use device camera for live detection | 🚀 Real-time monitoring, interactive demos |
 
-Build decoder model from [onnx-modifier](https://github.com/ZhangGe6/onnx-modifier) by myself.
 
-View model graph detail in [netron.app](https://netron.app/?url=https://github.com/nomi30701/yolo-object-detection-onnxruntime-web/blob/main/public/yolo-decoder.onnx)
+## 📊 Available Models
+| Model                                                  | Input Size | Param. | Best For |
+| :----------------------------------------------------- | :--------: | :----: | :------: |
+| [YOLO11-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  | 📱 Mobile devices & real-time applications |
+| [YOLO11-S](https://github.com/ultralytics/ultralytics) |    640     |  9.4M  | 🖥️ Higher accuracy requirements |
+| [YOLO11-M](https://github.com/ultralytics/ultralytics) |    640     |  20.1M  | 🖥️ Higher accuracy requirements |
 
-<details>
-  <summary>Click to see graph.</summary>
-  <img src="https://github.com/nomi30701/yolo-object-detection-onnxruntime-web/blob/main/yolo-decoder-graph-1.png" height=70% width=70%>
-  <img src="https://github.com/nomi30701/yolo-object-detection-onnxruntime-web/blob/main/yolo-decoder-graph-2.jpg" height=70% width=70%>
-</details>
+## 🛠️ Installation Guide
 
-## Setup
+1. Clone this repository
 
 ```bash
 git clone https://github.com/nomi30701/yolo-object-detection-onnxruntime-web.git
-cd yolo-object-detection-onnxruntime-web
-yarn install # install dependencies
 ```
 
-## Scripts
+2. cd to the project directory
 
 ```bash
-yarn dev # start dev server
+cd yolo-multi-task-onnxruntime-web
+```
+
+3. Install dependencies
+
+```bash
+yarn install
+```
+
+## 🚀 Running the Project
+
+Start development server
+
+```bash
+yarn dev
+```
+
+Build the project
+
+```bash
+yarn build
 ```
 
 ## 🔧 Using Custom YOLO Models
