@@ -26,9 +26,8 @@ export async function render_overlay(predictions, overlay_ctx, currentClasses) {
 function draw_object_detection(ctx, predictions, lineWidth, currentClasses) {
   if (!predictions || predictions.length === 0) return;
   const predictionsByClass = {};
-  const bbox_predictions = predictions;
 
-  bbox_predictions.forEach((predict) => {
+  predictions.forEach((predict) => {
     const classId = predict.class_idx;
     if (!predictionsByClass[classId]) predictionsByClass[classId] = [];
     predictionsByClass[classId].push(predict);

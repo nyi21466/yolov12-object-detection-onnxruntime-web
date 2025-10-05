@@ -29,7 +29,8 @@ The application supports multiple input types for object detection:
 | :----------------------------------------------------- | :--------: | :----: | :----------------------------------------: | :------------------------------------------------------------------------------------------------------- |
 | [YOLO11-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  | 📱 Mobile devices & real-time applications | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
 | [YOLO11-S](https://github.com/ultralytics/ultralytics) |    640     |  9.4M  |      🖥️ Higher accuracy requirements       | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
-| [YOLO11-M](https://github.com/ultralytics/ultralytics) |    640     | 20.1M  |      🖥️ Higher accuracy requirements       | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
+| [YOLO12-S](https://github.com/ultralytics/ultralytics) |    640     |  9.3M  | 📱 Mobile devices & real-time applications | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
+| [YOLO12-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  |      🖥️ Higher accuracy requirements       | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
 
 ## 🛠️ Installation Guide
 
@@ -98,7 +99,6 @@ In App.jsx, Ctrl+F search 'yolo11n-2.6M'
 <select name="model-selector">
   <option value="yolo11n">yolo11n-2.6M</option>
   <option value="yolo11s">yolo11s-9.4M</option>
-  <option value="yolo11m">yolo11m-20.1M</option>
   <option value="your-custom-model-name">Your Custom Model</option>
 </select>
 ```
