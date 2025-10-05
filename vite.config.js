@@ -1,22 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
-import mkcert from 'vite-plugin-mkcert'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler"]],
+      },
+    }),
     tailwindcss(),
-    mkcert()
   ],
   optimizeDeps: {
-    exclude: ['onnxruntime-web']
+    exclude: ["onnxruntime-web"],
   },
   assetsInclude: ["**/*.onnx"],
   base: "/yolo-object-detection-onnxruntime-web/",
-
-  server: {
-    https: true
-  },
-})
+});

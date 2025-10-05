@@ -13,6 +13,7 @@ const MODEL_CONFIG = {
   model: "yolo11n",
   model_path: "",
   imgsz_type: "dynamic",
+  classes: classes,
 };
 
 // Settings Components
@@ -22,6 +23,8 @@ function SettingsPanel({
   cameraSelectorRef,
   imgszTypeSelectorRef,
   modelConfigRef,
+  customClasses,
+  classFileSelectedRef,
   cameras,
   customModels,
   loadModel,
@@ -35,81 +38,123 @@ function SettingsPanel({
       <h2 className="text-lg sm:text-xl font-bold mb-3 text-gray-200 border-b border-gray-700 pb-2">
         Model Settings
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {/* Settings items */}
-        <div className="flex flex-col">
-          <label className="text-gray-300 mb-1 text-sm sm:text-base font-medium">
-            Backend:
-          </label>
-          <select
-            name="device-selector"
-            ref={backendSelectorRef}
-            onChange={(e) => {
-              modelConfigRef.current.backend = e.target.value;
-              loadModel();
-            }}
-            disabled={activeFeature !== null}
-            className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500"
-          >
-            <option value="wasm">Wasm(cpu)</option>
-            <option value="webgpu">webGPU</option>
-          </select>
+
+      <div className="mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-1 text-sm font-medium">
+              Backend:
+            </label>
+            <select
+              name="device-selector"
+              ref={backendSelectorRef}
+              onChange={(e) => {
+                modelConfigRef.current.backend = e.target.value;
+                loadModel();
+              }}
+              disabled={activeFeature !== null}
+              className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500 transition-all"
+            >
+              <option value="wasm">Wasm (CPU)</option>
+              <option value="webgpu">WebGPU</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-1 text-sm font-medium">
+              Model:
+            </label>
+            <select
+              name="model-selector"
+              ref={modelSelectorRef}
+              onChange={(e) => {
+                modelConfigRef.current.model = e.target.value;
+                loadModel();
+              }}
+              disabled={activeFeature !== null}
+              className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500 transition-all"
+            >
+              <option value="yolo11n">YOLO11n (2.6M)</option>
+              <option value="yolo11s">YOLO11s (9.4M)</option>
+              <option value="yolo12n">YOLO12n (2.6M)</option>
+              <option value="yolo12s">YOLO12s (9.3M)</option>
+              {customModels.map((model, index) => (
+                <option key={index} value={model.url}>
+                  {model.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <label className="text-gray-300 mb-1 text-sm sm:text-base font-medium">
-            Model:
-          </label>
-          <select
-            name="model-selector"
-            ref={modelSelectorRef}
-            onChange={(e) => {
-              modelConfigRef.current.model = e.target.value;
-              loadModel();
-            }}
-            disabled={activeFeature !== null}
-            className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500"
-          >
-            <option value="yolo11n">yolo11n-2.6M</option>
-            <option value="yolo11s">yolo11s-9.4M</option>
-            <option value="yolo11m">yolo11m-20.1M</option>
-            {customModels.map((model, index) => (
-              <option key={index} value={model.url}>
-                {model.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-300 mb-1 text-sm sm:text-base font-medium">
-            Camera:
-          </label>
-          <select
-            ref={cameraSelectorRef}
-            disabled={activeFeature !== null}
-            className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500"
-          >
-            {cameras.map((camera, index) => (
-              <option key={index} value={camera.deviceId}>
-                {camera.label || `Camera ${index + 1}`}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label className="text-gray-300 mb-1 text-sm sm:text-base font-medium">
-            Image Type:
-          </label>
-          <select
-            disabled={activeFeature !== null}
-            ref={imgszTypeSelectorRef}
-            onChange={(e) => {
-              modelConfigRef.current.imgsz_type = e.target.value;
-            }}
-            className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500"
-          >
-            <option value="dynamic">Dynamic</option>
-            <option value="zeroPad">Zero Pad</option>
-          </select>
+      </div>
+
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-1 text-sm font-medium">
+              Classes:
+            </label>
+            <select
+              ref={classFileSelectedRef}
+              defaultValue="default"
+              disabled={activeFeature !== null}
+              onChange={(e) => {
+                if (e.target.value === "default") {
+                  modelConfigRef.current.classes = classes;
+                } else {
+                  const selectedIndex = parseInt(e.target.value);
+                  modelConfigRef.current.classes =
+                    customClasses[selectedIndex].data;
+                }
+              }}
+              className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500 transition-all"
+            >
+              <option value="default">Default Classes (COCO)</option>
+              {customClasses.map((classFile, index) => (
+                <option key={index} value={index}>
+                  {classFile.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-1 text-sm font-medium">
+              Camera:
+            </label>
+            <select
+              ref={cameraSelectorRef}
+              disabled={activeFeature !== null}
+              className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500 transition-all"
+            >
+              {cameras.length === 0 ? (
+                <option value="">No cameras detected</option>
+              ) : (
+                cameras.map((camera, index) => (
+                  <option key={index} value={camera.deviceId}>
+                    {camera.label || `Camera ${index + 1}`}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-1 text-sm font-medium">
+              Image Type:
+            </label>
+            <select
+              disabled={activeFeature !== null}
+              ref={imgszTypeSelectorRef}
+              onChange={(e) => {
+                modelConfigRef.current.imgsz_type = e.target.value;
+              }}
+              className="p-2 text-sm rounded-md bg-gray-700 text-white border border-gray-600 focus:border-violet-500 focus:ring-2 focus:ring-violet-500 transition-all"
+            >
+              <option value="dynamic">Dynamic</option>
+              <option value="zeroPad">Zero Pad</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -191,6 +236,7 @@ function ControlButtons({
   handle_OpenImage,
   handle_ToggleCamera,
   handle_AddModel,
+  handle_AddClassesFile,
   activeFeature,
 }) {
   return (
@@ -374,6 +420,34 @@ function ControlButtons({
           </svg>
           Add Model
         </button>
+
+        <button
+          className="btn-secondary flex items-center justify-center"
+          onClick={(e) => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".json";
+            input.onchange = handle_AddClassesFile;
+            input.click();
+          }}
+          disabled={activeFeature !== null}
+        >
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+            />
+          </svg>
+          Add Classes.json
+        </button>
       </div>
     </div>
   );
@@ -442,7 +516,7 @@ function ModelStatus({ warnUpTime, inferenceTime, statusMsg, statusColor }) {
   );
 }
 
-function ResultsTable({ details }) {
+function ResultsTable({ details, currentClasses }) {
   return (
     <div className="container bg-gray-800 rounded-xl shadow-lg p-3 sm:p-4 mb-4 sm:mb-6">
       <details className="text-gray-200 group">
@@ -515,7 +589,8 @@ function ResultsTable({ details }) {
                         {index}
                       </td>
                       <td className="p-2 sm:p-3 font-medium text-xs sm:text-sm">
-                        {classes.class[item.class_idx]}
+                        {currentClasses[item.class_idx] ||
+                          `Class ${item.class_idx}`}
                       </td>
                       <td className="p-2 sm:p-3 text-xs sm:text-sm">
                         <div className="flex items-center">
@@ -572,6 +647,11 @@ function App() {
   const [details, setDetails] = useState([]);
   const [activeFeature, setActiveFeature] = useState(null); // null, 'video', 'image', 'camera'
 
+  // custom classes
+  const [customClasses, setCustomClasses] = useState([]);
+  const classFileSelectedRef = useRef(null);
+  // const [currentClasses, setCurrentClasses] = useState(classes);
+
   // Worker
   const videoWorkerRef = useRef(null);
 
@@ -625,7 +705,7 @@ function App() {
       : `${window.location.href}/models/${modelConfig.model}-detect.onnx`;
     modelConfig.model_path = model_path;
 
-    const cacheKey = `${modelConfig.model}-${modelConfig.task}-${modelConfig.backend}`;
+    const cacheKey = `${modelConfig.model}-${modelConfig.backend}`;
     if (modelCache.current[cacheKey]) {
       sessionRef.current = modelCache.current[cacheKey];
       setProcessingStatus((prev) => ({
@@ -677,6 +757,48 @@ function App() {
     }
   }, []);
 
+  // Button add classes file
+  const handle_AddClassesFile = useCallback((event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target.result);
+
+        const fileName = file.name.replace(/\.json$/i, "");
+        setCustomClasses((prev) => [
+          ...prev,
+          { name: fileName, data: jsonData },
+        ]);
+
+        setProcessingStatus((prev) => ({
+          ...prev,
+          statusMsg: `Classes file "${fileName}" loaded successfully`,
+          statusColor: "green",
+        }));
+      } catch (error) {
+        console.error("Error parsing JSON file:", error);
+        setProcessingStatus((prev) => ({
+          ...prev,
+          statusMsg: error.message || "Error parsing JSON file",
+          statusColor: "red",
+        }));
+      }
+    };
+
+    reader.onerror = () => {
+      setProcessingStatus((prev) => ({
+        ...prev,
+        statusMsg: "Failed to read file",
+        statusColor: "red",
+      }));
+    };
+
+    reader.readAsText(file);
+  }, []);
+
   // Button Upload Image
   const handle_OpenImage = useCallback(
     (imgUrl = null) => {
@@ -719,7 +841,7 @@ function App() {
         overlayCtx.canvas.width,
         overlayCtx.canvas.height
       );
-      await render_overlay(results, modelConfigRef.current.task, overlayCtx);
+      await render_overlay(results, overlayCtx, modelConfigRef.current.classes);
 
       setDetails(results);
       setProcessingStatus((prev) => ({
@@ -899,7 +1021,7 @@ function App() {
         overlayCtx.canvas.width,
         overlayCtx.canvas.height
       );
-      render_overlay(results, modelConfigRef.current.task, overlayCtx);
+      render_overlay(results, overlayCtx, modelConfigRef.current.classes);
 
       setDetails(results);
       setProcessingStatus((prev) => ({
@@ -943,6 +1065,8 @@ function App() {
         cameraSelectorRef={cameraSelectorRef}
         imgszTypeSelectorRef={imgszTypeSelectorRef}
         modelConfigRef={modelConfigRef}
+        customClasses={customClasses}
+        classFileSelectedRef={classFileSelectedRef}
         cameras={cameras}
         customModels={customModels}
         loadModel={loadModel}
@@ -958,9 +1082,7 @@ function App() {
         onImageLoad={handle_ImageLoad}
         activeFeature={activeFeature}
       />
-
       <ControlButtons
-        cameras={cameras}
         imgSrc={imgSrc}
         fileVideoRef={fileVideoRef}
         fileImageRef={fileImageRef}
@@ -968,6 +1090,7 @@ function App() {
         handle_OpenImage={handle_OpenImage}
         handle_ToggleCamera={handle_ToggleCamera}
         handle_AddModel={handle_AddModel}
+        handle_AddClassesFile={handle_AddClassesFile}
         activeFeature={activeFeature}
       />
 
@@ -978,7 +1101,10 @@ function App() {
         statusColor={processingStatus.statusColor}
       />
 
-      <ResultsTable details={details} />
+      <ResultsTable
+        details={details}
+        currentClasses={modelConfigRef.current.classes}
+      />
     </div>
   );
 }

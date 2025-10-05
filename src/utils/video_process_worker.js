@@ -113,15 +113,6 @@ self.onmessage = async function (e) {
       inputCtx.drawImage(frame, 0, 0);
       resultCtx.drawImage(frame, 0, 0);
 
-      // Process input frame
-      // const imgData = inputCtx.getImageData(
-      //   0,
-      //   0,
-      //   inputCanvas.width,
-      //   inputCanvas.height
-      // );
-      // const src_mat = cv.matFromImageData(imgData);
-
       // Inference, Draw
       const [results, inferenceTime] = await inference_pipeline(
         inputCanvas,
@@ -129,7 +120,11 @@ self.onmessage = async function (e) {
         [inputCanvas.width, inputCanvas.height],
         modelConfig
       );
-      await render_overlay(results, modelConfig.task, resultCtx);
+      await render_overlay(
+        results,
+        resultCtx,
+        modelConfig.classes
+      );
 
       // Create frame from result canvas
       const outputFrame = new VideoFrame(resultCanvas, {

@@ -1,13 +1,12 @@
-import classes from "./yolo_classes.json";
 import { Colors } from "./img_preprocess.js";
 
 /**
  * Draw bounding boxes in overlay canvas based on task type.
  * @param {Array[Object]} predictions - Detection/pose results
- * @param {string} task - Task type: "detect", "pose", or "segment"
  * @param {HTMLCanvasElement} overlay_ctx - Show boxes in overlay canvas element
+ * @param {Object} currentClasses - Currently selected classes object
  */
-export async function render_overlay(predictions, task, overlay_ctx) {
+export async function render_overlay(predictions, overlay_ctx, currentClasses) {
   // Calculate diagonal length of the canvas
   const diagonalLength = Math.sqrt(
     Math.pow(overlay_ctx.canvas.width, 2) +
@@ -17,17 +16,19 @@ export async function render_overlay(predictions, task, overlay_ctx) {
 
   if (!predictions || predictions.length === 0) return;
 
-  draw_object_detection(overlay_ctx, predictions, lineWidth);
+  // Draw predictions
+  draw_object_detection(overlay_ctx, predictions, lineWidth, currentClasses);
 }
 
 /**
  * Draw object detection results
  */
-function draw_object_detection(ctx, predictions, lineWidth) {
+function draw_object_detection(ctx, predictions, lineWidth, currentClasses) {
   if (!predictions || predictions.length === 0) return;
   const predictionsByClass = {};
+  const bbox_predictions = predictions;
 
-  predictions.forEach((predict) => {
+  bbox_predictions.forEach((predict) => {
     const classId = predict.class_idx;
     if (!predictionsByClass[classId]) predictionsByClass[classId] = [];
     predictionsByClass[classId].push(predict);
@@ -58,9 +59,9 @@ function draw_object_detection(ctx, predictions, lineWidth) {
     ctx.font = "16px Arial";
     items.forEach((predict) => {
       const [x1, y1] = predict.bbox;
-      const text = `${classes.class[predict.class_idx]} ${predict.score.toFixed(
-        2
-      )}`;
+      const text = `${
+        currentClasses.classes[predict.class_idx]
+      } ${predict.score.toFixed(2)}`;
       drawTextWithBackground(ctx, text, x1, y1);
     });
   });

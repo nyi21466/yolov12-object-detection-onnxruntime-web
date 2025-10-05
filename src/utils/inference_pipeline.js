@@ -1,5 +1,7 @@
-import cv from "@techstark/opencv-js";
+import cvReadyPromise from "@techstark/opencv-js";
 import { preProcess_img, applyNMS, Colors } from "./img_preprocess";
+
+const cv = await cvReadyPromise;
 
 /**
  * Inference pipeline for YOLO model.
@@ -7,9 +9,15 @@ import { preProcess_img, applyNMS, Colors } from "./img_preprocess";
  * @param {ort.InferenceSession} session - YOLO model ort session.
  * @param {[Number, Number]} overlay_size - Overlay width and height. [width, height]
  * @param {object} model_config - Model configuration object.
- * @returns {[object, string]} Array of detection results and inference time in ms.
+ * @returns {[object, string]} Tuple containing:
+ *   - First element: object with inference results:
+ *     - bbox_results: Array<Object> - Filtered detection results after NMS, each containing:
+ *       - bbox: [x, y, width, height] in original image coordinates
+ *       - class_idx: Predicted class index
+ *       - score: Confidence score (0-1)
+ *   - Second element: Inference time in milliseconds (formatted to 2 decimal places)
+ *
  */
-
 export async function inference_pipeline(
   imageSource,
   session,
@@ -36,7 +44,7 @@ export async function inference_pipeline(
     input_tensor.dispose();
 
     // Post process
-    let results = postProcess_detect(
+    const results = postProcess_detect(
       output0,
       model_config.score_threshold,
       xRatio,
@@ -51,6 +59,7 @@ export async function inference_pipeline(
       model_config.iou_threshold
     );
     const filtered_results = selected_indices.map((i) => results[i]);
+
     return [filtered_results, (end - start).toFixed(2)];
   } catch (error) {
     console.error("Inference error:", error);

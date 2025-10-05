@@ -17,19 +17,19 @@ This web application built on ONNX Runtime Web implements YOLO's object detectio
 
 The application supports multiple input types for object detection:
 
-| Input Type | Format | Description | Use Case |
-| :--------- | :----: | :---------- | :------- |
-| 📷 **Image** | JPG, PNG | Upload and analyze static images | 🔍 Single image analysis, batch processing |
-| 📹 **Video** | MP4 | Upload and process video files | 🎬 Offline video analysis, content review |
+| Input Type         |      Format      | Description                          | Use Case                                   |
+| :----------------- | :--------------: | :----------------------------------- | :----------------------------------------- |
+| 📷 **Image**       |     JPG, PNG     | Upload and analyze static images     | 🔍 Single image analysis, batch processing |
+| 📹 **Video**       |       MP4        | Upload and process video files       | 🎬 Offline video analysis, content review  |
 | 📺 **Live Camera** | Real-time stream | Use device camera for live detection | 🚀 Real-time monitoring, interactive demos |
 
-
 ## 📊 Available Models
-| Model                                                  | Input Size | Param. | Best For |
-| :----------------------------------------------------- | :--------: | :----: | :------: |
-| [YOLO11-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  | 📱 Mobile devices & real-time applications |
-| [YOLO11-S](https://github.com/ultralytics/ultralytics) |    640     |  9.4M  | 🖥️ Higher accuracy requirements |
-| [YOLO11-M](https://github.com/ultralytics/ultralytics) |    640     |  20.1M  | 🖥️ Higher accuracy requirements |
+
+| Model                                                  | Input Size | Param. |                  Best For                  | License                                                                                                  |
+| :----------------------------------------------------- | :--------: | :----: | :----------------------------------------: | :------------------------------------------------------------------------------------------------------- |
+| [YOLO11-N](https://github.com/ultralytics/ultralytics) |    640     |  2.6M  | 📱 Mobile devices & real-time applications | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
+| [YOLO11-S](https://github.com/ultralytics/ultralytics) |    640     |  9.4M  |      🖥️ Higher accuracy requirements       | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
+| [YOLO11-M](https://github.com/ultralytics/ultralytics) |    640     | 20.1M  |      🖥️ Higher accuracy requirements       | [AGPL-3.0](./public/models/LICENSE.txt) ([Ultralytics YOLO](https://github.com/ultralytics/ultralytics)) |
 
 ## 🛠️ Installation Guide
 
