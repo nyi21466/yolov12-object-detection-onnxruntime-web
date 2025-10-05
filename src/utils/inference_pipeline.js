@@ -1,7 +1,12 @@
 import cvReadyPromise from "@techstark/opencv-js";
 import { preProcess_img, applyNMS, Colors } from "./img_preprocess";
 
-const cv = await cvReadyPromise;
+let cv; 
+
+// init opencvjs
+(async () => {
+  cv = await cvReadyPromise;
+})();
 
 /**
  * Inference pipeline for YOLO model.
