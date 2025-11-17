@@ -1,4 +1,4 @@
-# yolo object detect onnxruntime-web
+# Web Object Detection GUI using YOLOv12 & YOLOv11 in ONNX
 
 <img src="./preview.png" height=60% width=60%>
 
