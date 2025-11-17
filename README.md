@@ -1,6 +1,8 @@
-# Web Object Detection GUI using YOLOv12 & YOLOv11 in ONNX
+# Web Object Detection GUI using YOLOv12 & v11 in ONNX
 
+<div align="center">
 <img src="./preview.png" height=60% width=60%>
+</div>
 
 ## ✨ Features
 
@@ -51,6 +53,8 @@ cd yolo-multi-task-onnxruntime-web
 
 ```bash
 yarn install
+# or
+npm install
 ```
 
 ## 🚀 Running the Project
@@ -59,6 +63,8 @@ Start development server
 
 ```bash
 yarn dev
+# or
+npm start
 ```
 
 Build the project
